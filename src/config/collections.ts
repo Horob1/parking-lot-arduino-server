@@ -1,0 +1,5 @@
+export const STATUS_LOG_COLLECTION_NAME = 'status-logs'
+export const LOG_COLLECTION_NAME = 'logs'
+export const CARD_COLLECTION_NAME = 'cards'
+export const USERS_COLLECTION_NAME = 'users'
+export const WARNING_COLLECTION_NAME = 'warnings'
