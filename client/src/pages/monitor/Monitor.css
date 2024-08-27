@@ -1,0 +1,68 @@
+.monitor-container {
+  border-top: rgb(0, 0, 0) 8px solid;
+  border-right: rgb(0, 0, 0) 8px solid;
+}
+.monitor {
+  display: flex;
+  gap: 1em;
+}
+
+.road-in {
+  height: 160px;
+  width: 160px;
+  position: relative;
+}
+
+.road-out {
+  height: 160px;
+  width: 100%;
+  position: relative;
+}
+
+.road-in::after {
+  content: "";
+  display: block;
+  position: absolute;
+  transform: translateY(-100%);
+  top: 100%;
+  right: 0;
+  width: 160px;
+  height: 8px;
+  
+}
+
+.road-out::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 152px;
+}
+
+@keyframes openAnimation {
+  from {
+    background-color: rgb(241, 66, 66);
+  }
+  to {
+    background-color: rgb(32, 236, 32);
+  }
+}
+
+@keyframes closeAnimation {
+  from {
+    background-color: rgb(32, 236, 32);
+  }
+  to {
+    background-color: rgb(241, 66, 66);
+  }
+}
+
+.open::after {
+  animation: openAnimation 0.5s forwards;
+}
+
+.close::after {
+  animation: closeAnimation 0.5s forwards;
+}

@@ -1,0 +1,30 @@
+.card {
+  height: 160px;
+  width: 160px;
+  border-radius: 8px;
+  display: flex;
+  place-items: center;
+}
+
+.card-full {
+  background-color: rgb(241, 66, 66);
+}
+
+.card-empty {
+  background-color: rgb(32, 236, 32);
+}
+
+.card:hover {
+  border-color: #646cff;
+}
+.card:focus,
+.card:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.card-title {
+  color: white;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+}

@@ -51,7 +51,8 @@ export const initSocket = (httpServer: HttpServer) => {
             })
           )
         //bắn socket cảnh báo đến client
-        socket.emit('warning', warning)
+        io.emit('warning', warning)
+        io.emit('ui-update', data)
         //bắn socket đến especially
         return socket.emit('full-slots', { isFull: false })
       }
@@ -77,8 +78,8 @@ export const initSocket = (httpServer: HttpServer) => {
             })
           )
         //bắn socket đến client
-        socket.emit('warning', warning)
-        return socket.emit('check-in-card-in-use')
+        io.emit('warning', warning)
+        return io.emit('check-in-card-in-use')
       }
 
       if (card.type == 'guest') {
@@ -102,8 +103,8 @@ export const initSocket = (httpServer: HttpServer) => {
               })
             )
           // bắn lỗi tới client
-          socket.emit('warning', warning)
-          return socket.emit('invalid-check-in-user')
+          io.emit('warning', warning)
+          return io.emit('invalid-check-in-user')
         }
         io.emit('check-in-user-success', { name: user.name })
       }
@@ -127,8 +128,8 @@ export const initSocket = (httpServer: HttpServer) => {
             })
           )
         // bắn soket đến client ngay
-        socket.emit('warning', warning)
-        return socket.emit('check-out-card-is-not-in-use')
+        io.emit('warning', warning)
+        return io.emit('check-out-card-is-not-in-use')
       }
 
       const bill = card.type == 'guest' ? getBill(log.createdAt) : null
@@ -153,12 +154,17 @@ export const initSocket = (httpServer: HttpServer) => {
               })
             )
           // bắn lỗi tới client
-          socket.emit('warning', warning)
-          return socket.emit('invalid-check-out-user')
+          io.emit('warning', warning)
+          return io.emit('invalid-check-out-user')
         }
         io.emit('check-out-user-success', { name: user.name })
       }
     })
+
+    socket.on('open-in', () => io.emit('open-gate-in'))
+    socket.on('open-out', () => io.emit('open-gate-out'))
+    socket.on('close-out', () => io.emit('close-gate-out'))
+    socket.on('close-in', () => io.emit('close-gate-in'))
 
     socket.on('disconnect', (reason) => {
       console.log(`User disconnected: ${reason}`)
