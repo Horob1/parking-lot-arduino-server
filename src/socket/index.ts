@@ -41,6 +41,20 @@ export const initSocket = (httpServer: HttpServer) => {
         .insertOne(new StatusLog({ slots: data }))
       // handle full slots
       const isFull = data === FULL_STATUS
+      const maxSlots = await getDB().collection(LOG_COLLECTION_NAME).countDocuments({ isPaid: false })
+      if (isFull && maxSlots !== 4) {
+        const warning = await getDB()
+          .collection(WARNING_COLLECTION_NAME)
+          .insertOne(
+            new Warning({
+              desc: `Slots or database log are problem! Check now!`
+            })
+          )
+        //bắn socket cảnh báo đến client
+        socket.emit('warning', warning)
+        //bắn socket đến especially
+        return socket.emit('full-slots', { isFull: false })
+      }
       io.emit('full-status', { isFull: isFull })
       io.emit('ui-update', data)
     })
@@ -63,6 +77,7 @@ export const initSocket = (httpServer: HttpServer) => {
             })
           )
         //bắn socket đến client
+        socket.emit('warning', warning)
         return socket.emit('check-in-card-in-use')
       }
 
@@ -87,6 +102,7 @@ export const initSocket = (httpServer: HttpServer) => {
               })
             )
           // bắn lỗi tới client
+          socket.emit('warning', warning)
           return socket.emit('invalid-check-in-user')
         }
         io.emit('check-in-user-success', { name: user.name })
@@ -102,6 +118,16 @@ export const initSocket = (httpServer: HttpServer) => {
       const log = await getDB().collection(LOG_COLLECTION_NAME).findOne({ card: card._id, isPaid: false })
 
       if (!log) {
+        const warning = await getDB()
+          .collection(WARNING_COLLECTION_NAME)
+          .insertOne(
+            new Warning({
+              desc: 'Check out gate now',
+              card: card._id
+            })
+          )
+        // bắn soket đến client ngay
+        socket.emit('warning', warning)
         return socket.emit('check-out-card-is-not-in-use')
       }
 
@@ -127,6 +153,7 @@ export const initSocket = (httpServer: HttpServer) => {
               })
             )
           // bắn lỗi tới client
+          socket.emit('warning', warning)
           return socket.emit('invalid-check-out-user')
         }
         io.emit('check-out-user-success', { name: user.name })

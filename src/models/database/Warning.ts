@@ -2,13 +2,13 @@ import { ObjectId } from 'mongodb'
 
 export interface IWarning {
   _id?: ObjectId
-  card: ObjectId
+  card?: ObjectId
   desc: string
   createdAt?: Date
 }
 export class Warning {
   _id?: ObjectId
-  card: ObjectId
+  card?: ObjectId
   desc: string
   createdAt?: Date
 
