@@ -1,15 +1,26 @@
 import { Link, Outlet } from 'react-router-dom'
 import './App.css'
 import { UseSocket } from './Socket'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import FireAlertModal from './components/Warning'
 function App() {
+  const [isModalOpen, setModalOpen] = useState(false)
   const { socket } = UseSocket()
+  const openModal = () => {
+    setModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+  }
 
   useEffect(() => {
     if (socket) {
+      socket.on('flame-on-client', openModal)
+      socket.on('flame-off-client', closeModal)
       // Cleanup on component unmount
       return () => {
-        socket.off()
+        socket.off('flame-on-client')
       }
     }
   }, [socket])
@@ -31,6 +42,9 @@ function App() {
         <h1>🚗🚗 PARKING LOT 🚗🚗</h1>
       </div>
       <Outlet />
+      <div>
+        <FireAlertModal isOpen={isModalOpen}/>
+      </div>
     </>
   )
 }
