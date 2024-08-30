@@ -34,6 +34,9 @@ export const initSocket = (httpServer: HttpServer) => {
       console.log('Connection error:', err.message)
     })
 
+    socket.on('flame-on', () => io.emit('flame-on-client'))
+    socket.on('flame-off', () => io.emit('flame--client'))
+
     socket.on('update', async (payload: { data: string }) => {
       const data = payload.data.slice(0, payload.data.length - 1)
       await getDB()
