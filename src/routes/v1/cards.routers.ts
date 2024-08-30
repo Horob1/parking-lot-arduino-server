@@ -1,14 +1,12 @@
 import { Router } from 'express'
 import {
   createCardController,
-  getCardController,
-  getUserByCardIdController,
+  getAllCardsWithUsersController,
   updateCardUserController
 } from '~/controllers/cards.controllers'
 const router = Router()
 
-router.get('/getCard/:cardId', getCardController)
-router.get('/getUserByCardId/:cardId', getUserByCardIdController)
+router.get('/cardsWithUsers', getAllCardsWithUsersController)
 router.post('/createCard', createCardController)
-router.put('/updateCardUser/:cardId', updateCardUserController)
+router.patch('/updateCardUser/:uid', updateCardUserController)
 export default router

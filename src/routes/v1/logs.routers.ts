@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import { createLogController, getLogsController } from '~/controllers/logs.controllers'
+import { getLogsByDateController } from '~/controllers/logs.controllers'
 
 const router = Router()
+router.get('/logsByDate/:date', getLogsByDateController)
 
-router.post('/createLog', createLogController)
-router.get('/getLogs', getLogsController)
 export default router

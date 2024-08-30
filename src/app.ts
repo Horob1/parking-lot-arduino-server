@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import { createServer } from 'http'
 import { initSocket } from './socket'
 import cron from 'node-cron'
@@ -16,7 +16,10 @@ app.get('/', (req, res) => {
 })
 app.use('/api', router)
 // cron.schedule('* * * * *', sendLogAtEndOfDays)
-
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.log('Error:', err.message)
+  res.status(404).json({ error: err.message })
+})
 cron.schedule('5 0 * * *', sendLogAtEndOfDays)
 
 initSocket(httpServer)
