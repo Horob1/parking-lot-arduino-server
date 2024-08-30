@@ -1,0 +1,15 @@
+.card-display {
+  position: relative;
+}
+
+.card-details p {
+  color: azure;
+}
+
+.edit {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  cursor: pointer;
+  padding: 4px;
+}

@@ -1,0 +1,61 @@
+.modal-content {
+  background-color: #5c17db;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  animation: none;
+}
+
+.close-button {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  cursor: pointer;
+  border-radius: 100%;
+  padding: 4px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.sim {
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+}
+
+.card-title h3 {
+  font-size: 16px;
+  color: azure;
+  text-align: end;
+}
+
+.main-card {
+  padding: 16px;
+}
+
+.card-uid input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+.card-type select {
+  margin-bottom: 16px;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  justify-self: start;
+}
+
+.create-option {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}

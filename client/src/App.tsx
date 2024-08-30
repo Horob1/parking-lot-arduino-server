@@ -29,13 +29,16 @@ function App() {
     <>
       <div className='tab'>
         <Link to={'/'}>
-          <button>Home</button>
+          <button>Home 🏠</button>
         </Link>
         <Link to={'/user'}>
-          <button>User</button>
+          <button>User 😊</button>
         </Link>
-        <Link to={'/warning'}>
-          <button>Warning</button>
+        <Link to={'/card'}>
+          <button>Card 💳</button>
+        </Link>
+        <Link to={'/log'}>
+          <button>Log 🗂️</button>
         </Link>
       </div>
       <div className='main-title'>
@@ -43,7 +46,7 @@ function App() {
       </div>
       <Outlet />
       <div>
-        <FireAlertModal isOpen={isModalOpen}/>
+        <FireAlertModal isOpen={isModalOpen} />
       </div>
     </>
   )
