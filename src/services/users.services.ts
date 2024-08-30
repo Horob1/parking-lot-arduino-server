@@ -5,38 +5,23 @@ import { StatusLog } from '~/models/database/User'
 import { IUser } from '~/models/database/User'
 
 class UserService {
-  async getUser(user_id: string) {
-    return await getDB()
-      .collection(USERS_COLLECTION_NAME)
-      .findOne(
-        { _id: new ObjectId(user_id) },
-        {
-          projection: {
-            password: 0
-          }
-        }
-      )
+  async getUser(id: string): Promise<IUser | null> {
+    const db = getDB()
+    if (!ObjectId.isValid(id)) {
+      throw new Error('Invalid ID format')
+    }
+    const user = (await db.collection(USERS_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })) as IUser
+    return user
   }
-  async getUserByCardUid(uid: string) {
-    return await getDB()
-      .collection(USERS_COLLECTION_NAME)
-      .findOne(
-        { cardUid: uid },
-        {
-          projection: {
-            password: 0
-          }
-        }
-      )
-  }
+
   async createUser(data: IUser): Promise<any> {
     const db = getDB()
-    // Kiểm tra trùng lặp số CCCD và số điện thoại
+    // Kiểm tra trùng lặp số CCCD
     const existingUser = await db.collection(USERS_COLLECTION_NAME).findOne({
-      $or: [{ cccd: data.cccd }, { phone: data.phone }]
+      $or: [{ cccd: data.cccd }]
     })
     if (existingUser) {
-      throw new Error('CCCD or phone number already exists')
+      throw new Error('CCCD already exists')
     }
     const result = await db.collection(USERS_COLLECTION_NAME).insertOne({
       ...data,
@@ -45,14 +30,10 @@ class UserService {
     })
     return result
   }
-  async updateUser(userId: string, updateData: Partial<IUser>): Promise<void> {
-    const result = await getDB()
-      .collection(USERS_COLLECTION_NAME)
-      .updateOne({ _id: new ObjectId(userId) }, { $set: { ...updateData, updatedAt: new Date() } })
-
-    if (result.matchedCount === 0) {
-      throw new Error('User not found')
-    }
+  async updateUser(id: string, updateData: Partial<IUser>): Promise<boolean> {
+    const db = getDB()
+    const result = await db.collection('users').updateOne({ _id: new ObjectId(id) }, { $set: updateData })
+    return result.modifiedCount > 0
   }
 
   async deleteUser(userId: string): Promise<void> {
@@ -73,15 +54,30 @@ class UserService {
       .skip((page - 1) * limit)
       .limit(limit)
       .toArray()
-
     const totalUsers = await db.collection(USERS_COLLECTION_NAME).countDocuments({})
-
     return {
       users,
       totalUsers,
       totalPages: Math.ceil(totalUsers / limit),
       currentPage: page
     }
+  }
+  async getUserById(id: string): Promise<IUser | null> {
+    const db = getDB()
+    const objectId = new ObjectId(id)
+    const result = await db.collection('users').findOne({ _id: objectId })
+    if (result) {
+      return {
+        _id: result._id as ObjectId,
+        name: result.name,
+        cccd: result.cccd,
+        phone: result.phone,
+        type: result.type,
+        createdAt: result.createdAt ? new Date(result.createdAt) : undefined,
+        updatedAt: result.updatedAt ? new Date(result.updatedAt) : undefined
+      }
+    }
+    return null
   }
 }
 export const usersService = new UserService()

@@ -1,56 +1,33 @@
 import { Request, Response, NextFunction } from 'express'
 import { cardsService } from '~/services/cards.services'
+import { usersService } from '~/services/users.services'
 
-export const getCardController = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllCardsWithUsersController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { cardId } = req.params
-    const card = await cardsService.getCard(cardId)
-
-    if (!card) {
-      return res.status(404).json({ message: 'Card not found' })
-    }
-
-    res.status(200).json({ message: 'Card retrieved successfully', result: card })
-  } catch (error) {
-    next(error)
-  }
-}
-export const getUserByCardIdController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { cardId } = req.params
-    const user = await cardsService.getUserByCardId(cardId)
-    res.status(200).json({ message: 'User retrieved successfully', result: user })
+    const cardsWithUsers = await cardsService.getAllCardsWithUsers()
+    res.status(200).json({ message: 'Cards with users retrieved successfully', result: cardsWithUsers })
   } catch (error) {
     next(error)
   }
 }
 export const createCardController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const cardData = req.body
-    const cardId = await cardsService.createCard(cardData)
-
-    res.status(201).json({
-      message: 'Card created successfully',
-      result: {
-        _id: cardId
-      }
-    })
+    const { uid, user, type } = req.body
+    const newCard = await cardsService.createCard({ uid, user, type })
+    res.status(201).json({ message: 'Card created successfully', result: newCard })
   } catch (error) {
     next(error)
   }
 }
 export const updateCardUserController = async (req: Request, res: Response, next: NextFunction) => {
+  const { uid } = req.params
+  const { userId } = req.body
   try {
-    const { cardId } = req.params
-    const { userId } = req.body
-
     if (!userId) {
-      return res.status(400).json({ message: 'User ID is required' })
+      return res.status(400).json({ error: 'User ID is required' })
     }
-
-    await cardsService.updateCardUser(cardId, userId)
-
-    res.status(200).json({ message: 'User updated in card successfully' })
+    const updatedCard = await cardsService.updateCardUser(uid, userId)
+    res.status(200).json({ message: 'User updated in card successfully', result: updatedCard })
   } catch (error) {
     next(error)
   }

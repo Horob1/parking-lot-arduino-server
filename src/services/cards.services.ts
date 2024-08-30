@@ -1,65 +1,69 @@
 import { ObjectId } from 'mongodb'
 import { CARD_COLLECTION_NAME, USERS_COLLECTION_NAME } from '~/config/collections'
 import { getDB } from '~/config/mongodb'
-import { ICard } from '~/models/database/Card'
+import { Card, ICard } from '~/models/database/Card'
 
 class CardService {
-  async getCard(cardId: string) {
-    if (!ObjectId.isValid(cardId)) {
-      throw new Error('Invalid card ID')
+  async getAllCardsWithUsers() {
+    const db = getDB()
+    const cardsWithUsers = await db
+      .collection('cards')
+      .aggregate([
+        {
+          $lookup: {
+            from: 'users', // Tên của collection users
+            localField: 'user', // Trường liên kết trong collection cards
+            foreignField: '_id', // Trường liên kết trong collection users
+            as: 'userDetails' // Tên của trường mới chứa thông tin user
+          }
+        },
+        {
+          $unwind: '$userDetails' // Bỏ mảng trong kết quả lookup để nhận về một đối tượng user
+        },
+        {
+          $project: {
+            _id: 1,
+            uid: 1,
+            type: 1,
+            createdAt: 1,
+            'userDetails._id': 1,
+            'userDetails.name': 1,
+            'userDetails.cccd': 1,
+            'userDetails.phone': 1
+          }
+        }
+      ])
+      .toArray()
+    return cardsWithUsers
+  }
+  async createCard(cardData: ICard): Promise<Card | null> {
+    const { uid, user, type, createdAt } = cardData
+    const db = getDB()
+    // Kiểm tra người dùng có tồn tại không
+    if (user) {
+      const existingUser = await db.collection('users').findOne({ _id: new ObjectId(user) })
+      if (!existingUser) {
+        throw new Error('User does not exist')
+      }
     }
-
-    const card = await getDB()
-      .collection(CARD_COLLECTION_NAME)
-      .findOne({ _id: new ObjectId(cardId) })
-
+    const card = new Card(cardData)
+    const result = await db.collection(CARD_COLLECTION_NAME).insertOne(card)
+    return result.insertedId ? card : null
+  }
+  async updateCardUser(uid: string, userId: string) {
+    const db = getDB()
+    const card = await db.collection('cards').findOne({ uid })
     if (!card) {
       throw new Error('Card not found')
     }
-
-    return card
-  }
-  async getUserByCardId(cardId: string) {
-    const card = await getDB()
-      .collection(CARD_COLLECTION_NAME)
-      .findOne({ _id: new ObjectId(cardId) })
-
-    if (!card || !card.user) {
-      throw new Error('Card not found or no associated user')
-    }
-
-    const user = await getDB().collection(USERS_COLLECTION_NAME).findOne({ _id: card.user })
-
+    const user = await db.collection('users').findOne({ _id: new ObjectId(userId) })
     if (!user) {
       throw new Error('User not found')
     }
-
-    return user
-  }
-  async createCard(cardData: ICard): Promise<ObjectId> {
-    const result = await getDB()
-      .collection(CARD_COLLECTION_NAME)
-      .insertOne({
-        ...cardData,
-        createdAt: new Date()
-      })
-
-    return result.insertedId
-  }
-  async updateCardUser(cardId: string, userId: string): Promise<void> {
-    const db = getDB()
-
-    if (!ObjectId.isValid(cardId) || !ObjectId.isValid(userId)) {
-      throw new Error('Invalid card ID or user ID')
-    }
-    const user = await db.collection(USERS_COLLECTION_NAME).findOne({ _id: new ObjectId(userId) })
-    if (!user) {
-      throw new Error('User not found')
-    }
-    await db
-      .collection(CARD_COLLECTION_NAME)
-      .updateOne({ _id: new ObjectId(cardId) }, { $set: { user: new ObjectId(userId), updatedAt: new Date() } })
+    const result = await db
+      .collection('cards')
+      .findOneAndUpdate({ uid }, { $set: { user: new ObjectId(userId) } }, { returnDocument: 'after' })
+    return result
   }
 }
-
 export const cardsService = new CardService()

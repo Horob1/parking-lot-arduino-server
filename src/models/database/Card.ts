@@ -14,11 +14,11 @@ export class Card {
   type: string
   createdAt?: Date
 
-  constructor({ _id, uid, type, user, createdAt }: ICard) {
+  constructor({ _id, uid, user, createdAt }: ICard) {
     this._id = _id
     this.uid = uid
-    this.type = type
     this.user = user
+    this.type = 'user'
     this.createdAt = createdAt || new Date()
   }
 }

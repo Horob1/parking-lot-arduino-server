@@ -1,24 +1,26 @@
 import { ObjectId } from 'mongodb'
 import { getDB } from '~/config/mongodb'
-import { LOG_COLLECTION_NAME } from '~/config/collections'
-import { ILog } from '~/models/database/Log'
+import { ILog } from '~/models/database/Log' // Đảm bảo import đúng model
+import { IStatusLog } from '~/models/database/StatusLog'
 
-class LogService {
-  async createLog(data: ILog): Promise<any> {
+class LogsService {
+  async getLogsByDate(date: Date): Promise<ILog[]> {
     const db = getDB()
-
-    const result = await db.collection(LOG_COLLECTION_NAME).insertOne({
-      ...data,
-      createdAt: data.createdAt || new Date(),
-      checkedOutAt: data.checkedOutAt
-    })
-    return result
+    const startOfDay = new Date(date.setHours(0, 0, 0, 0))
+    const endOfDay = new Date(date.setHours(23, 59, 59, 999))
+    const logs = await db
+      .collection('LOG_COLLECTION_NAME')
+      .find({
+        createdAt: { $gte: startOfDay, $lt: endOfDay }
+      })
+      .toArray()
+    return logs as ILog[]
   }
-  async getLogs(): Promise<ILog[]> {
+  async getStatusLogs(): Promise<IStatusLog[]> {
     const db = getDB()
-    const logs = (await db.collection(LOG_COLLECTION_NAME).find({}).toArray()) as ILog[]
-    return logs
+
+    const statusLogs = await db.collection('STATUS_LOG_COLLECTION_NAME').find().toArray()
+    return statusLogs as IStatusLog[]
   }
 }
-
-export const logService = new LogService()
+export const logsService = new LogsService()
