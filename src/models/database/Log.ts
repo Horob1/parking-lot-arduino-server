@@ -7,6 +7,7 @@ export interface ILog {
   bill?: number
   user?: ObjectId
   createdAt?: Date
+  checkedOutAt?: Date
 }
 export class Log {
   _id?: ObjectId
