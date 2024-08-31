@@ -9,6 +9,7 @@ function App() {
   const [isModalOpen, setModalOpen] = useState(false)
   const { socket } = UseSocket()
   const openModal = () => {
+    toast.error("Cảnh báo phát hiện lửa!")
     setModalOpen(true)
   }
 
@@ -23,11 +24,9 @@ function App() {
   useEffect(() => {
     if (socket) {
       socket.on('flame-on-client', openModal)
-      socket.on('flame-off-client', closeModal)
       socket.on('warning', handleWarning)
       // Cleanup on component unmount
       return () => {
-        socket.off('flame-off-client', closeModal)
         socket.off('flame-on-client', openModal)
         socket.off('warning', handleWarning)
       }
@@ -58,7 +57,7 @@ function App() {
       </div>
       <Outlet />
       <div>
-        <FireAlertModal isOpen={isModalOpen} />
+        <FireAlertModal isOpen={isModalOpen} onClose={closeModal} />
       </div>
       <Toaster position='top-center' reverseOrder={false} />
     </>

@@ -35,7 +35,6 @@ export const initSocket = (httpServer: HttpServer) => {
     })
 
     socket.on('flame-on', () => io.emit('flame-on-client'))
-    socket.on('flame-off', () => io.emit('flame-off-client'))
 
     socket.on('update', async (payload: { data: string }) => {
       const data = payload.data.slice(0, payload.data.length - 1)
