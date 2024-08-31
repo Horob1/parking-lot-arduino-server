@@ -202,7 +202,7 @@ void canhBaoChay() {
     webSocket.emit("flame-on");
     digitalWrite(buzzerPin1, HIGH);
     digitalWrite(buzzerPin2, HIGH);
-
+    delay(100);
     while (digitalRead(flameSensorPin) == LOW) {
       delay(3000);
     }
