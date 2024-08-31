@@ -13,3 +13,12 @@ export const getLogsByDateController = async (req: Request, res: Response, next:
     next(error)
   }
 }
+
+export const getNewestLogController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const log = await logsService.getNewestLogController()
+    res.status(200).json({ message: 'Log retrieved successfully', result: log })
+  } catch (error) {
+    next(error)
+  }
+}

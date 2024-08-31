@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Card } from './components/Card'
 import './Monitor.css'
 import { UseSocket } from '../../Socket'
+import { instance } from '../../utils/axios'
+
 export const Monitor = () => {
   const [isInGateOpen, setInGateOpen] = useState<boolean>(false)
   const [isOutGateOpen, setOutGateOpen] = useState<boolean>(false)
@@ -20,6 +22,21 @@ export const Monitor = () => {
         .reverse()
     )
   }
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const fetchData = async () => {
+      try {
+        const response = await instance('/api/v1/logs/getNewestLog', { signal: controller.signal })
+        handleUpdateSlots(response.data.result)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        setSlots([false, false, false, false])
+      }
+    }
+    fetchData()
+    return () => controller.abort() // Cancel fetchData when component unmounts
+  }, []) // Triggered when socket is ready
 
   useEffect(() => {
     if (socket) {

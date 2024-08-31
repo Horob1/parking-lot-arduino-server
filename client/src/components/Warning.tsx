@@ -11,10 +11,12 @@ const FireAlertModal: React.FC<FireAlertModalProps> = ({ isOpen }) => {
   if (!isOpen) return null
 
   return (
-    <div className='modal-overlay'>
-      <div className='modal-content'>
-        <h2>Cảnh Báo Cháy!</h2>
-        <p>Đã phát hiện nhiệt độ cao. Hãy rời khỏi khu vực ngay lập tức!</p>
+    <div className='modal-overlay-warning'>
+      <div className='modal-content-warning'>
+        
+        <h2 style={{
+          fontSize: '20px',
+        }}>Đã phát hiện nhiệt độ cao. Hãy rời khỏi khu vực ngay lập tức!</h2>
       </div>
     </div>
   )

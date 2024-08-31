@@ -1,5 +1,4 @@
-import { ObjectId } from 'mongodb'
-import { LOG_COLLECTION_NAME } from '~/config/collections'
+import { LOG_COLLECTION_NAME, STATUS_LOG_COLLECTION_NAME } from '~/config/collections'
 import { getDB } from '~/config/mongodb'
 import { ILog } from '~/models/database/Log' // Đảm bảo import đúng model
 import { IStatusLog } from '~/models/database/StatusLog'
@@ -25,6 +24,12 @@ class LogsService {
       .toArray()
 
     return logs as ILog[]
+  }
+
+  getNewestLogController = async () => {
+    const logs = await getDB().collection(STATUS_LOG_COLLECTION_NAME).find({}).sort('-createdAt').toArray()
+    if (logs.length > 0) return (logs[logs.length - 1] as IStatusLog).slots
+    else return '0000'
   }
 }
 export const logsService = new LogsService()

@@ -35,7 +35,7 @@ export const initSocket = (httpServer: HttpServer) => {
     })
 
     socket.on('flame-on', () => io.emit('flame-on-client'))
-    socket.on('flame-off', () => io.emit('flame--client'))
+    socket.on('flame-off', () => io.emit('flame-off-client'))
 
     socket.on('update', async (payload: { data: string }) => {
       const data = payload.data.slice(0, payload.data.length - 1)
@@ -65,6 +65,7 @@ export const initSocket = (httpServer: HttpServer) => {
 
     socket.on('check-in', async (payload: { uid: string }) => {
       const uid = payload.uid.slice(0, payload.uid.length - 1)
+      console.log(uid)
       const card = await getDB().collection(CARD_COLLECTION_NAME).findOne({ uid })
 
       if (!card) return socket.emit('invalid-check-in-card')
