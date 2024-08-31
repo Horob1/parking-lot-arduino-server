@@ -4,10 +4,12 @@ import { initSocket } from './socket'
 import cron from 'node-cron'
 import { sendLogAtEndOfDays } from './utils/cron'
 import router from './routes'
+import cors from 'cors'
 const app = express()
 
 const httpServer = createServer(app)
 
+app.use(cors({ origin: '*' }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

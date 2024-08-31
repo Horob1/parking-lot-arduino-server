@@ -6,7 +6,7 @@ import {
 } from '~/controllers/cards.controllers'
 const router = Router()
 
-router.get('/cardsWithUsers', getAllCardsWithUsersController)
-router.post('/createCard', createCardController)
-router.patch('/updateCardUser/:uid', updateCardUserController)
+router.get('/', getAllCardsWithUsersController)
+router.post('/', createCardController)
+router.patch('/:uid', updateCardUserController)
 export default router

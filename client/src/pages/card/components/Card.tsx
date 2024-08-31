@@ -1,7 +1,23 @@
 import { FiEdit } from 'react-icons/fi'
 import sim from './../../../assets/sim.svg'
 import './Card.css'
-export const Card = () => {
+import { ICard } from './CardList'
+import toast from 'react-hot-toast'
+import { instance } from '../../../utils/axios'
+interface CardProps {
+  card: ICard
+}
+export const Card = ({ card }: CardProps) => {
+  const handleUpdateCard = async () => {
+    // TODO: Update card and remove user from it
+    try {
+      await instance.patch('/api/v1/cards/' + card.uid)
+      window.location.reload()
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error('Có lỗi')
+    }
+  }
   return (
     <div className='modal-content card-display'>
       <div className='card-title'>
@@ -12,13 +28,18 @@ export const Card = () => {
           <img src={sim} alt='chip' />
         </div>
         <div className='card-details'>
-          <p>UID: XXXX-XXXX-XXXX-0000</p>
-          <p>TYPE: Thru: 01/23</p>
+          <p>UID: {card.uid}</p>
+          <p>
+            TYPE: {card.type} {card?.user?.name || ''}
+          </p>
         </div>
       </div>
-      <button className='edit'>
-        <FiEdit />
-      </button>
+      {card.type === 'user' && card?.user?.name && (
+        <button className='edit tooltip' onClick={handleUpdateCard}>
+          <span className='tooltiptext'>Xoá user trên card này</span>
+          <FiEdit />
+        </button>
+      )}
     </div>
   )
 }

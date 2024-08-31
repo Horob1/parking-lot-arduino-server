@@ -8,6 +8,7 @@ import { User } from './pages/user/User.tsx'
 import { SocketProvider } from './Socket.tsx'
 import { Card } from './pages/card/Card.tsx'
 import { Log } from './pages/log/Log.tsx'
+import WarningPage from './pages/warning/Warning.tsx'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
       { path: '/', element: <Monitor /> },
       { path: 'user', element: <User /> },
       { path: 'card', element: <Card /> },
-      { path: 'log', element: <Log /> }
+      { path: 'log', element: <Log /> },
+      { path: 'warning', element: <WarningPage /> }
     ]
   }
 ])

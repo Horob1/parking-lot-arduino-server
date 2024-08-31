@@ -5,17 +5,15 @@ export interface IUser {
   name: string
   cccd: string
   phone: string
-  type: string
   createdAt?: Date
   updatedAt?: Date
 }
 
-export class StatusLog {
+export class User {
   _id?: ObjectId
   name: string
   cccd: string
   phone: string
-  type: string
   createdAt?: Date
   updatedAt?: Date
 
@@ -24,8 +22,7 @@ export class StatusLog {
     this.name = name
     this.cccd = cccd
     this.phone = phone
-    this.type = 'user'
-    this.createdAt = createdAt
-    this.updatedAt = updatedAt
+    this.createdAt = createdAt || new Date()
+    this.updatedAt = updatedAt || new Date()
   }
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
 import './User.css'
+import { instance } from '../../utils/axios'
+import toast from 'react-hot-toast'
 
 interface User {
   _id?: string
@@ -9,11 +11,11 @@ interface User {
   phone: string
   createdAt?: Date
   updatedAt?: Date
-  card: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  card: any
 }
 
 export const User: React.FC = () => {
-
   const [users, setUsers] = useState<User[]>([])
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -27,75 +29,19 @@ export const User: React.FC = () => {
   })
 
   useEffect(() => {
-    // Sử dụng dữ liệu giả thay vì gọi API
-    const fakeUsers: User[] = [
-      {
-        _id: '1',
-        name: 'Nguyễn Văn A',
-        cccd: '012345678901',
-        phone: '0909123456',
-        createdAt: new Date('2023-01-01'),
-        updatedAt: new Date('2023-08-01'),
-        card: '1234567890'
-      },
-      {
-        _id: '2',
-        name: 'Trần Thị B',
-        cccd: '987654321012',
-        phone: '0909765432',
-        createdAt: new Date('2023-02-01'),
-        updatedAt: new Date('2023-08-02'),
-        card: '2345678901'
-      },
-      {
-        _id: '3',
-        name: 'Lê Văn C',
-        cccd: '123456789098',
-        phone: '0909345678',
-        createdAt: new Date('2023-03-01'),
-        updatedAt: new Date('2023-08-03'),
-        card: '3456789012'
-      },
-      // Thêm nhiều user hơn nếu cần
-      {
-        _id: '4',
-        name: 'Phạm Thị D',
-        cccd: '111122223333',
-        phone: '0911222333',
-        createdAt: new Date('2023-04-01'),
-        updatedAt: new Date('2023-08-04'),
-        card: '4567890123'
-      },
-      {
-        _id: '5',
-        name: 'Hoàng Văn E',
-        cccd: '444455556666',
-        phone: '0933444555',
-        createdAt: new Date('2023-05-01'),
-        updatedAt: new Date('2023-08-05'),
-        card: '5678901234'
-      },
-      {
-        _id: '6',
-        name: 'Nguyễn Văn F',
-        cccd: '777788889999',
-        phone: '0909999888',
-        createdAt: new Date('2023-06-01'),
-        updatedAt: new Date('2023-08-06'),
-        card: '6789012345'
-      },
-      {
-        _id: '7',
-        name: 'Trần Thị G',
-        cccd: '888899990000',
-        phone: '0900888999',
-        createdAt: new Date('2023-07-01'),
-        updatedAt: new Date('2023-08-07'),
-        card: '7890123456'
+    const controller = new AbortController()
+    const fetchUsers = async () => {
+      try {
+        const response = await instance.get('/api/v1/users', { signal: controller.signal })
+        setUsers(response.data.result)
+      } catch (error) {
+        console.error('Error fetching users:', error)
       }
-      // Và nhiều người dùng khác...
-    ]
-    setUsers(fakeUsers)
+    }
+    fetchUsers()
+    return () => {
+      controller.abort()
+    }
   }, [])
 
   const openCreateModal = () => {
@@ -109,20 +55,42 @@ export const User: React.FC = () => {
   }
 
   const openUpdateModal = (user: User) => {
-    setEditUser(user)
+    setEditUser({ ...user, card: user?.card?.uid || '' })
     setIsUpdateModalOpen(true)
   }
 
-  const handleCreateUser = () => {
-    const newUserWithId = { ...newUser, _id: String(users.length + 1) }
-    setUsers([...users, newUserWithId])
-    setIsCreateModalOpen(false)
+  const handleCreateUser = async () => {
+    try {
+      if (newUser.name !== '' && newUser.cccd !== '' && newUser.phone !== '') {
+        await instance.post(`/api/v1/users`, { ...newUser })
+        const newUserWithId = {
+          ...newUser,
+          _id: String(users.length + 1),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+        setUsers([...users, newUserWithId])
+        setIsCreateModalOpen(false)
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+      toast.error('Có lỗi!')
+    }
   }
 
-  const handleUpdateUser = () => {
-    if (editUser) {
-      setUsers(users.map((user) => (user._id === editUser._id ? editUser : user)))
-      setIsUpdateModalOpen(false)
+  const handleUpdateUser = async () => {
+    try {
+      if (editUser) {
+        const oldCard = users.find((user) => user._id === editUser._id)?.card?.uid || ''
+        await instance.patch(`/api/v1/users/${editUser._id}`, { ...editUser, oldCard })
+        setUsers(users.map((user) => (user._id === editUser._id ? { ...user, card: { uid: editUser.card } } : user)))
+        setIsUpdateModalOpen(false)
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      //
+      toast.error('Có lỗi!')
     }
   }
 
@@ -154,21 +122,22 @@ export const User: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user.name}</td>
-              <td>{user.cccd}</td>
-              <td>{user.phone}</td>
-              <td>{user.card}</td>
-              <td>{user.createdAt?.toLocaleString()}</td>
-              <td>{user.updatedAt?.toLocaleString()}</td>
-              <td>
-                <button onClick={() => openUpdateModal(user)} className='edit-button'>
-                  Edit
-                </button>
-              </td>
-            </tr>
-          ))}
+          {users &&
+            users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.cccd}</td>
+                <td>{user.phone}</td>
+                <td>{user?.card?.uid || ''}</td>
+                <td>{user.createdAt?.toLocaleString()}</td>
+                <td>{user.updatedAt?.toLocaleString()}</td>
+                <td>
+                  <button onClick={() => openUpdateModal(user)} className='edit-button'>
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
