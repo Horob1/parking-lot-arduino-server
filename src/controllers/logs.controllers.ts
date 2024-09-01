@@ -3,10 +3,13 @@ import { logsService } from '~/services/logs.services'
 
 export const getLogsByDateController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const date = new Date(req.params.date)
-    if (isNaN(date.getTime())) {
-      return res.status(400).json({ error: 'Invalid date format' })
-    }
+    const dateString = req.params.date
+
+    // Split the string into year, month, and day
+    const [year, month, day] = dateString.split('-').map(Number)
+
+    // Create a Date object (adjust month by subtracting 1 because months are zero-based)
+    const date = new Date(Date.UTC(year, month - 1, day))
     const logs = await logsService.getLogsByDate(date)
     res.status(200).json({ message: 'Logs retrieved successfully', result: logs })
   } catch (error) {
