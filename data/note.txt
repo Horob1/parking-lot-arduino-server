@@ -1,0 +1,19 @@
+#ESP6288
+	#00 in mode 0
+	#01 in mode 1
+	#02 in mode 2
+	#03 in mode 3
+	#04 update dữ liệu về slot #04  
+	#05 check card ở cổng vào
+	#06 check card ở cổng ra
+	#07 open cong in
+	#08 dong cong in
+	#09 mo cong out
+	#10 dong cong out
+	
+#Arduino
+	#00 cho phep mo
+	#01 cho phep ra
+	#02 invalid card, used card cổng in
+	#03 ....................... cổng out
+	#04 chay

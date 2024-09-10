@@ -3,7 +3,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022", // Target output cho code
-    "outDir": "dist", //
+    "outDir": "src/dist", //
     "esModuleInterop": true,
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
