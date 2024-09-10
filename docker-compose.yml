@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: mongodb://mongo:27017
+      DATABASE_NAME: parking_lot
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      SENDER_EMAIL: ${SENDER_EMAIL}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

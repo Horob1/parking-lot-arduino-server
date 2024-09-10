@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb'
 import { CARD_COLLECTION_NAME, USERS_COLLECTION_NAME } from '~/config/collections'
 import { getDB } from '~/config/mongodb'
 import { Card, ICard } from '~/models/database/Card'

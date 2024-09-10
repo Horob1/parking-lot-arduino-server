@@ -24,10 +24,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({ error: err.message })
 })
 
-app.use('/', express.static(path.join(__dirname, 'dist')))
+app.use('/', express.static(path.join(__dirname, 'fe')))
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  res.sendFile(path.join(__dirname, 'fe', 'index.html'))
 })
 
 cron.schedule('5 0 * * *', sendLogAtEndOfDays)
