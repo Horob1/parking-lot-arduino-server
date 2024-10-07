@@ -9,7 +9,7 @@ SocketIoClient webSocket;
 
 const char* ssid = "AiLoan02";
 const char* password = "mancityvodich";
-const char* ipAd = "192.168.1.16";
+const char* ipAd = "192.168.137.216";
 const int port = 3000;
 
 // LCD
@@ -190,27 +190,27 @@ void onCheckOutUserSuccess(const char *payload, size_t length) {
   handlePrint();
 }
 
-// flame warning
-#define flameSensorPin D5
-#define buzzerPin1 D3
-#define buzzerPin2 D4
+// // flame warning
+// #define flameSensorPin D5
+// #define buzzerPin1 D3
+// #define buzzerPin2 D4
 
-void canhBaoChay() {
-  int flameDetected = digitalRead(flameSensorPin);
-  if (flameDetected == LOW) { // Tín hiệu LOW nghĩa là phát hiện lửa
-    Serial.println("#04");
-    webSocket.emit("flame-on");
-    digitalWrite(buzzerPin1, HIGH);
-    digitalWrite(buzzerPin2, HIGH);
-    delay(100);
-    while (digitalRead(flameSensorPin) == LOW) {
-      delay(3000);
-    }
+// void canhBaoChay() {
+//   int flameDetected = digitalRead(flameSensorPin);
+//   if (flameDetected == LOW) { // Tín hiệu LOW nghĩa là phát hiện lửa
+//     Serial.println("#04");
+//     webSocket.emit("flame-on");
+//     digitalWrite(buzzerPin1, HIGH);
+//     digitalWrite(buzzerPin2, HIGH);
+//     delay(100);
+//     while (digitalRead(flameSensorPin) == LOW) {
+//       delay(3000);
+//     }
 
-    digitalWrite(buzzerPin1, LOW);
-    digitalWrite(buzzerPin2, LOW);
-  }
-}
+//     digitalWrite(buzzerPin1, LOW);
+//     digitalWrite(buzzerPin2, LOW);
+//   }
+// }
 
 void setup() {
   // init serial
@@ -223,10 +223,10 @@ void setup() {
   lcd.backlight();
   lcd.clear();
 
-  // init flame sensor
-  pinMode(flameSensorPin, INPUT);
-  pinMode(buzzerPin1, OUTPUT);
-  pinMode(buzzerPin2, OUTPUT);
+  // // init flame sensor
+  // pinMode(flameSensorPin, INPUT);
+  // pinMode(buzzerPin1, OUTPUT);
+  // pinMode(buzzerPin2, OUTPUT);
 
   // init WiFi
   WiFiMulti.addAP(ssid, password);
@@ -258,7 +258,7 @@ void loop() {
 
   handleReceiveData();
 
-  canhBaoChay();
+  // canhBaoChay();
 }
 // Print
 
