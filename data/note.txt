@@ -16,4 +16,3 @@
 	#01 cho phep ra
 	#02 invalid card, used card cổng in
 	#03 ....................... cổng out
-	#04 chay
