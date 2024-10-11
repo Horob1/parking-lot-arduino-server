@@ -16,6 +16,7 @@
   },
   "type": "user",
   "uid": "43b9edc",
+  "user": null,
   "createdAt": {
     "$date": {
       "$numberLong": "3833727814800000"
@@ -27,6 +28,7 @@
     "$oid": "66dff96fde01d015449cf378"
   },
   "uid": "6324659",
+  "user": null,
   "type": "user",
   "createdAt": {
     "$date": "2024-09-10T07:46:55.487Z"
@@ -37,6 +39,7 @@
     "$oid": "66dff997de01d015449cf379"
   },
   "uid": "53b55b19",
+  "user": null,
   "type": "user",
   "createdAt": {
     "$date": "2024-09-10T07:47:35.682Z"
@@ -47,6 +50,7 @@
     "$oid": "66dff9aede01d015449cf37a"
   },
   "uid": "477de23a",
+  "user": null,
   "type": "user",
   "createdAt": {
     "$date": "2024-09-10T07:47:58.984Z"

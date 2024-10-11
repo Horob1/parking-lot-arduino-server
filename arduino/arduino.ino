@@ -183,13 +183,12 @@ void handleReceiveData() {
       lastScanUidIn = "";
     } else if (receivedData.startsWith("#03")) {
       lastScanUidOut = "";
+    } else if (receivedData.startsWith("#04")) {
+      inServo.write(90);
+      outServo.write(90);
+      delay(5000);
+      inServo.write(0);
+      outServo.write(0);
     }
-    // } else if (receivedData.startsWith("#04")) {
-    //   inServo.write(90);
-    //   outServo.write(90);
-    //   delay(5000);
-    //   inServo.write(0);
-    //   outServo.write(0);
-    // }
   }
 }
