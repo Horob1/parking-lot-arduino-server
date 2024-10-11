@@ -8,4 +8,5 @@ const router = Router()
 
 router.get('/', getAllCardsWithUsersController)
 router.post('/', createCardController)
+router.patch('/:uid', updateCardUserController)
 export default router
