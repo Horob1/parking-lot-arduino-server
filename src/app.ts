@@ -30,7 +30,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'fe', 'index.html'))
 })
 
-// cron.schedule('5 0 * * *', sendLogAtEndOfDays)
+cron.schedule('5 0 * * *', sendLogAtEndOfDays)
 
 initSocket(httpServer)
 export default httpServer

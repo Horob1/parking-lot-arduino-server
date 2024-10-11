@@ -33,6 +33,9 @@ export const initSocket = (httpServer: HttpServer) => {
     socket.on('connect_error', (err) => {
       console.log('Connection error:', err.message)
     })
+
+    socket.on('flame-on', () => io.emit('flame-on-client'))
+
     socket.on('update', async (payload: { data: string }) => {
       const data = payload.data.slice(0, payload.data.length - 1)
       await getDB()
@@ -52,7 +55,7 @@ export const initSocket = (httpServer: HttpServer) => {
         //bắn socket cảnh báo đến client
         io.emit('warning', warning)
         io.emit('ui-update', data)
-        //bắn socket đến esp
+        //bắn socket đến especially
         return socket.emit('full-slots', { isFull: false })
       }
       io.emit('full-status', { isFull: isFull })
@@ -61,7 +64,7 @@ export const initSocket = (httpServer: HttpServer) => {
 
     socket.on('check-in', async (payload: { uid: string }) => {
       const uid = payload.uid.slice(0, payload.uid.length - 1)
-      console.log('Card: ', uid)
+      console.log(uid)
       const card = await getDB().collection(CARD_COLLECTION_NAME).findOne({ uid })
 
       if (!card) return socket.emit('invalid-check-in-card')
