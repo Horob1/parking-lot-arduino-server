@@ -2,7 +2,7 @@
 
 ## 📜 Giới Thiệu
 
-Dự án "Quản Lý Đỗ Xe Thông Minh" nhằm xây dựng một hệ thống thông minh để quản lý không gian đỗ xe. Hệ thống này kết hợp công nghệ **Node.js** cho phần backend, **React.js** cho phần giao diện người dùng, và **ESP32** cho việc giao tiếp với các cảm biến đỗ xe. Mục tiêu là tối ưu hóa việc sử dụng không gian đỗ xe và cung cấp thông tin thời gian thực về tình trạng các chỗ đỗ.
+Dự án "Quản Lý Đỗ Xe Thông Minh" nhằm xây dựng một hệ thống thông minh để quản lý không gian đỗ xe. Hệ thống này kết hợp công nghệ **Node.js** cho phần backend, **React.js** cho phần giao diện người dùng, và **ESP8266** cho việc giao tiếp với các cảm biến đỗ xe. Mục tiêu là tối ưu hóa việc sử dụng không gian đỗ xe và cung cấp thông tin thời gian thực về tình trạng các chỗ đỗ.
 
 ---
 
