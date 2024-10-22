@@ -10,7 +10,7 @@ Dự án "Quản Lý Đỗ Xe Thông Minh" nhằm xây dựng một hệ thống
 
 ### 1. Phần Cứng
 
-- **ESP32**: Thiết bị nhúng kết nối với cảm biến khoảng cách để phát hiện tình trạng chỗ đỗ xe. ESP32 gửi dữ liệu này đến server qua giao thức HTTP hoặc MQTT.
+- **ESP8266**: Thiết bị nhúng kết nối với cảm biến khoảng cách để phát hiện tình trạng chỗ đỗ xe. ESP8266 gửi dữ liệu này đến server qua giao thức HTTP hoặc MQTT.
 - **Cảm Biến Khoảng Cách**: Đo khoảng cách và xác định trạng thái của các chỗ đỗ xe.
 
 ### 2. Phần Mềm
@@ -19,3 +19,52 @@ Dự án "Quản Lý Đỗ Xe Thông Minh" nhằm xây dựng một hệ thống
 - **Giao Diện Người Dùng (React.js)**: Hiển thị tình trạng các chỗ đỗ xe và cung cấp các công cụ quản lý cho người dùng và quản trị viên.
 
 ---
+### 3. Hướng dẫn sử dụng
+#### 3.1 Phần cứng
+- **Yêu cầu**: Cài đặt Arduino IDE và giải nén file libs vào thư mục Arduino trong document
+
+<img src="./md/giai_nen.png">
+
+
+- Triển khai phần cứng
+- Kết nối với một mạng wifi giữa máy tính cá nhân => lấy ssid và password cùng địa chỉ ip thay vào code esp
+
+<img src="./md/dia_chi_ip.png">
+
+- Ví dụ
+
+```c++
+  const char* ssid = "Akasuza";
+  const char* password = "987654321";
+  const char* ipAd = "192.168.130.89";
+  const int port = 3000;
+```
+- Cài driver của esp8266 và nạp code
+
+#### 3.2 Phần mềm
+
+##### 3.2.1 Cách 1
+
+- Cài đặt mongodb >v7
+- Cài đặt nodejs v20
+- mở 1 terminal trong destop và chạy các lệnh sau
+
+```bash
+git clone https://github.com/Horob1/parking-lot-arduino-server
+
+cd parking-lot-arduino-server
+
+npm run i
+
+npm run dev
+```
+##### 3.2.1 Cách 2
+- Cài docker 
+- mở 1 terminal trong destop và chạy các lệnh sau
+```bash
+git clone https://github.com/Horob1/parking-lot-arduino-server
+
+cd parking-lot-arduino-server
+
+docker-compose up --build
+```

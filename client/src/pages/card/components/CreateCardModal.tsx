@@ -52,8 +52,8 @@ const CreateCardModal: React.FC<CreateCardProps> = ({ isOpen, onClose }) => {
               </div>
               <div className='card-type'>
                 <select name='card-type' id='create-type' value={newCard.type} onChange={handleTypeChange}>
-                  <option value='type-option'>user</option>
-                  <option value='type-option'>guest</option>
+                  <option value='user'>user</option>
+                  <option value='guest'>guest</option>
                 </select>
               </div>
             </div>
