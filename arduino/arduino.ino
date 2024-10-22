@@ -18,7 +18,7 @@
 #define IR_CAR3_PIN A2
 #define IR_CAR4_PIN A1
 #define IR_OUT_PIN A0
-#define SS_PIN 10
+#define SS_PIN 10   
 #define RST_PIN 9
 
 // Threshold

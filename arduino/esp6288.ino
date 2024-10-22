@@ -7,9 +7,9 @@
 ESP8266WiFiMulti WiFiMulti;
 SocketIoClient webSocket;
 
-const char* ssid = "AiLoan02";
-const char* password = "mancityvodich";
-const char* ipAd = "192.168.1.16";
+const char* ssid = "Akasuza";
+const char* password = "987654321";
+const char* ipAd = "192.168.130.89";
 const int port = 3000;
 
 // LCD
