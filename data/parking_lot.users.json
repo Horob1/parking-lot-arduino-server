@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "6717785e5f3edb912f36cedd"
+  },
+  "name": "Nguyen Van Cong",
+  "cccd": "1282838",
+  "phone": "1838282",
+  "createdAt": {
+    "$date": "2024-10-22T10:03:10.696Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-22T10:03:10.696Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6717786d5f3edb912f36cede"
+  },
+  "name": "Nguyen The Anh",
+  "cccd": "293838",
+  "phone": "283737",
+  "createdAt": {
+    "$date": "2024-10-22T10:03:25.247Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-22T10:03:25.247Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6717787b5f3edb912f36cedf"
+  },
+  "name": "Nguyen Truong Giang",
+  "cccd": "827374",
+  "phone": "8337273",
+  "createdAt": {
+    "$date": "2024-10-22T10:03:39.137Z"
+  },
+  "updatedAt": {
+    "$date": "2024-10-22T10:03:39.137Z"
+  }
+}]

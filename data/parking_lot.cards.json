@@ -1,0 +1,46 @@
+[{
+  "_id": {
+    "$oid": "671787f61fe39af3bdf509b5"
+  },
+  "uid": "53b55b19",
+  "user": null,
+  "type": "guest",
+  "createdAt": {
+    "$date": "2024-10-22T11:09:42.325Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6717880a1fe39af3bdf509b6"
+  },
+  "uid": "23c4c430",
+  "user": null,
+  "type": "guest",
+  "createdAt": {
+    "$date": "2024-10-22T11:10:02.657Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "671799e3c620107e4a7302e0"
+  },
+  "uid": "43b9edc",
+  "user": {
+    "$oid": "6717785e5f3edb912f36cedd"
+  },
+  "type": "user",
+  "createdAt": {
+    "$date": "2024-10-22T12:26:11.911Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "671799edc620107e4a7302e1"
+  },
+  "uid": "6324659",
+  "user": null,
+  "type": "user",
+  "createdAt": {
+    "$date": "2024-10-22T12:26:21.334Z"
+  }
+}]
